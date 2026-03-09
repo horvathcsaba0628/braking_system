@@ -1,0 +1,32 @@
+#ifndef MOTION_HANDLER_HPP
+#define MOTION_HANDLER_HPP
+
+#include <rclcpp/rclcpp.hpp>
+#include <crp_msgs/msg/scenario.hpp>
+#include <crp_msgs/msg/ego.hpp>
+#include <crp_msgs/msg/target_space.hpp>
+#include <tier4_planning_msgs/msg/trajectory.hpp>
+
+namespace brakingSystem
+{
+
+    class MotionHandler : public rclcpp::Node
+    {
+    public:
+        MotionHandler();
+
+    private:
+        void scenarioCallback(const crp_msgs::msg::Scenario::SharedPtr msg);
+        void egoCallback(const crp_msgs::msg::Ego::SharedPtr msg);
+        void targetSpaceCallback(const crp_msgs::msg::TargetSpace::SharedPtr msg);
+
+        rclcpp::Subscription<crp_msgs::msg::Scenario>::SharedPtr m_subScenario_;
+        rclcpp::Subscription<crp_msgs::msg::Ego>::SharedPtr m_subEgo_;
+        rclcpp::Subscription<crp_msgs::msg::TargetSpace>::SharedPtr m_subTargetSpace_;
+
+        rclcpp::Publisher<tier4_planning_msgs::msg::Trajectory>::SharedPtr m_pubTrajectory_;
+    };
+
+} // namespace brakingSystem
+
+#endif // MOTION_HANDLER_HPP

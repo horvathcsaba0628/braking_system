@@ -1,6 +1,6 @@
-#include <plan_motion_planning/motionHandler.hpp>
+#include <plan_long_emergency/motionHandler.hpp>
 
-crp::apl::MotionHandler::MotionHandler() : Node("motion_handler")
+brakingSystem::MotionHandler::MotionHandler() : Node("plan_long_emergency")
 {
     this->declare_parameter<std::string>("input_topic_ego", "ego");
     this->declare_parameter<std::string>("input_topic_scenario", "scenario");
@@ -13,36 +13,41 @@ crp::apl::MotionHandler::MotionHandler() : Node("motion_handler")
     std::string inputTopicTargetSpace;
     std::string outputTopicTrajectory;
 
-    m_subScenario_ = this->create_subscription<tier4_planning_msgs::msg::Scenario>(
+    this->get_parameter("input_topic_ego", inputTopicEgo);
+    this->get_parameter("input_topic_scenario", inputTopicScenario);
+    this->get_parameter("input_topic_target_space", inputTopicTargetSpace);
+    this->get_parameter("output_topic_trajectory", outputTopicTrajectory);
+
+    m_subScenario_ = this->create_subscription<crp_msgs::msg::Scenario>(
         inputTopicScenario,
         1,
         std::bind(&MotionHandler::scenarioCallback, this, std::placeholders::_1));
 
-    m_subEgo_ = this->create_subscription<crp_msgs::msg::ego>(
+    m_subEgo_ = this->create_subscription<crp_msgs::msg::Ego>(
         inputTopicEgo,
         1,
         std::bind(&MotionHandler::egoCallback, this, std::placeholders::_1));
 
-    m_subTargetSpace_ = this->create_publisher<crp_msgs::msg::TargetSpace>(
+    m_subTargetSpace_ = this->create_subscription<crp_msgs::msg::TargetSpace>(
         inputTopicTargetSpace,
         1,
         std::bind(&MotionHandler::targetSpaceCallback, this, std::placeholders::_1));
 
-    m_pubTrajectory_ = this->create_publisher<autoware_planning_msgs::msg::Trajectory>(
+    m_pubTrajectory_ = this->create_publisher<tier4_planning_msgs::msg::Trajectory>(
         outputTopicTrajectory,
         1);
 
-    RCLCPP_INFO(this->get_logger(), "motion_handler node has been started");
+    RCLCPP_INFO(this->get_logger(), "Plan_long_emergency node has been started");
 }
 
 
-void brakingSystem::MotionHandler::scenarioCallback(const crp_msgs::msg::scenario::SharedPtr msg)
+void brakingSystem::MotionHandler::scenarioCallback(const crp_msgs::msg::Scenario::SharedPtr msg)
 {
     // Implementation for scenario callback
 }
 
 
-void brakingSystem::MotionHandler::egoCallback(const crp_msgs::msg::ego::SharedPtr msg)
+void brakingSystem::MotionHandler::egoCallback(const crp_msgs::msg::Ego::SharedPtr msg)
 {
     // Implementation for ego callback
 }

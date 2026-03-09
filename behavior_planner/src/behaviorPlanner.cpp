@@ -1,6 +1,6 @@
 #include <behavior_planner/behaviorPlanner.hpp>
 
-brakingSystem::BehaviorPlanner::BehaviorPlanner() : rclcpp::Node("behavior_planner")
+brakingSystem::BehaviorPlanner::BehaviorPlanner() : Node("behavior_planner")
 {
     this->declare_parameter<std::string>("input_topic_ego", "ego");
     this->declare_parameter<std::string>("input_topic_scenario", "scenario");
