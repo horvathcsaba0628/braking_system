@@ -18,12 +18,12 @@ brakingSystem::BehaviorPlanner::BehaviorPlanner() : rclcpp::Node("behavior_plann
     this->get_parameter<std::string>("output_topic_scenario", outputTopicScenario);
     this->get_parameter<std::string>("output_topic_target_space", outputTopicTargetSpace);
 
-    m_subScenario_ = this->create_subscription<crp_msgs::msg::scenario>(
+    m_subScenario_ = this->create_subscription<crp_msgs::msg::Scenario>(
         inputTopicScenario,
         1,
         std::bind(&BehaviorPlanner::scenarioCallback, this, std::placeholders::_1));
 
-    m_subEgo_ = this->create_subscription<crp_msgs::msg::ego>(
+    m_subEgo_ = this->create_subscription<crp_msgs::msg::Ego>(
         inputTopicEgo,
         1,
         std::bind(&BehaviorPlanner::egoCallback, this, std::placeholders::_1));
@@ -39,12 +39,12 @@ brakingSystem::BehaviorPlanner::BehaviorPlanner() : rclcpp::Node("behavior_plann
     RCLCPP_INFO(this->get_logger(), "behavior_planner node has been started");
 }
 
-void brakingSystem::BehaviorPlanner::scenarioCallback(const crp_msgs::msg::scenario::SharedPtr msg)
+void brakingSystem::BehaviorPlanner::scenarioCallback(const crp_msgs::msg::Scenario::SharedPtr msg)
 {
     // Implementation for scenario callback
 }
 
-void brakingSystem::BehaviorPlanner::egoCallback(const crp_msgs::msg::ego::SharedPtr msg)
+void brakingSystem::BehaviorPlanner::egoCallback(const crp_msgs::msg::Ego::SharedPtr msg)
 {
     // Implementation for ego callback
 }

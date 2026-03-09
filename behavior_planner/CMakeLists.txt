@@ -8,11 +8,13 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(crp_msgs REQUIRED)
+find_package(tier4_planning_msgs REQUIRED)
 
 include_directories(include)
 
 add_executable(behavior_planner src/behaviorPlanner.cpp)
-ament_target_dependencies(behavior_planner rclcpp)
+ament_target_dependencies(behavior_planner rclcpp crp_msgs tier4_planning_msgs)
 
 
 install(TARGETS

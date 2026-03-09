@@ -2,7 +2,10 @@
 #define BEHAVIOR_PLANNER_HPP
 
 #include <rclcpp/rclcpp.hpp>
-#include <crp_msgs/msg>
+#include <crp_msgs/msg/scenario.hpp>
+#include <crp_msgs/msg/ego.hpp>
+#include <crp_msgs/msg/target_space.hpp>
+#include <tier4_planning_msgs/msg/scenario.hpp>
 
 namespace brakingSystem
 {
@@ -13,11 +16,11 @@ namespace brakingSystem
         BehaviorPlanner();
 
     private:
-        void ScenarioCallback(const crp_msgs::msg::scenario::SharedPtr msg);
-        void EgoCallback(const crp_msgs::msg::ego::SharedPtr msg);
+        void scenarioCallback(const crp_msgs::msg::Scenario::SharedPtr msg);
+        void egoCallback(const crp_msgs::msg::Ego::SharedPtr msg);
 
-        rclcpp::Subscription<crp_msgs::msg::scenario>::SharedPtr m_subScenario_;
-        rclcpp::Subscription<crp_msgs::msg::ego>::SharedPtr m_subEgo_;
+        rclcpp::Subscription<crp_msgs::msg::Scenario>::SharedPtr m_subScenario_;
+        rclcpp::Subscription<crp_msgs::msg::Ego>::SharedPtr m_subEgo_;
 
         rclcpp::Publisher<tier4_planning_msgs::msg::Scenario>::SharedPtr m_pubScenario_;
         rclcpp::Publisher<crp_msgs::msg::TargetSpace>::SharedPtr m_pubTargetSpace_;
