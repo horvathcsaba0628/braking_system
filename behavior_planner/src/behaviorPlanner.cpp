@@ -41,12 +41,14 @@ brakingSystem::BehaviorPlanner::BehaviorPlanner() : Node("behavior_planner")
 
 void brakingSystem::BehaviorPlanner::scenarioCallback(const crp_msgs::msg::Scenario::SharedPtr msg)
 {
-    // Implementation for scenario callback
+    for (const auto &path: msg->paths) {
+        RCLCPP_INFO(this->get_logger(), "Behavior: %d", path.path.points);
+    }
 }
 
 void brakingSystem::BehaviorPlanner::egoCallback(const crp_msgs::msg::Ego::SharedPtr msg)
 {
-    // Implementation for ego callback
+    return;
 }
 
 int main(int argc, char **argv)
