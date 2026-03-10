@@ -29,17 +29,26 @@ brakingSystem::CtrlLongEmergency ::CtrlLongEmergency () : Node("ctrl_long_emerge
         outputTopicControl,
         1);
 
+    m_timer_ = this->create_wall_timer(std::chrono::milliseconds(20), std::bind(&brakingSystem::CtrlLongEmergency::run, this));  
+
     RCLCPP_INFO(this->get_logger(), "ctrl_long_emergency node has been started");
 }
 
 void brakingSystem::CtrlLongEmergency::egoCallback(const crp_msgs::msg::Ego::SharedPtr msg)
 {
-    // Implementation for ego callback
+    
 }
 
 void brakingSystem::CtrlLongEmergency::trajectoryCallback(const autoware_planning_msgs::msg::Trajectory::SharedPtr msg)
 {
     // Implementation for trajectory callback
+}
+
+void brakingSystem::CtrlLongEmergency::run()
+{
+    m_pubControl_->publish(m_control_msg);
+
+    RCLCPP_INFO(this->get_logger(), "Published control command");
 }
 
 
