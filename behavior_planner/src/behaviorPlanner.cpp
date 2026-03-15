@@ -41,14 +41,26 @@ brakingSystem::BehaviorPlanner::BehaviorPlanner() : Node("behavior_planner")
 
 void brakingSystem::BehaviorPlanner::scenarioCallback(const crp_msgs::msg::Scenario::SharedPtr msg)
 {
-    for (const auto &path: msg->paths) {
-        RCLCPP_INFO(this->get_logger(), "Behavior: %d", path.path.points);
+    const float LANE_WIDTH = 3.5f;
+    const float CRITICAL_DISTANCE = 50.0f;
+
+    for (const auto &obj : msg->local_moving_objects.objects)
+    {
+        double obj_x = obj.kinematics.initial_pose_with_covariance.pose.position.x;
+        double obj_y = obj.kinematics.initial_pose_with_covariance.pose.position.y;
+
+        if (obj_x > 0 && obj_x < CRITICAL_DISTANCE && std::abs(obj_y) < LANE_WIDTH / 2.0f )
+        {
+            RCLCPP_INFO(this->get_logger(), "CRITICAL OBJECT: dx=%.2f, dy=%.2f", obj_x, obj_y);
+            // TODO: Publish to mpubTargetSpace or mpubScenario
+        }
     }
 }
 
 void brakingSystem::BehaviorPlanner::egoCallback(const crp_msgs::msg::Ego::SharedPtr msg)
 {
-    return;
+    m_ego_pose_ = msg->pose.pose.position;
+    m_ego_heading_ = msg->orientation;
 }
 
 int main(int argc, char **argv)
